@@ -1,10 +1,25 @@
 import { faker, Faker } from "@faker-js/faker";
 import { createHash } from "../utils/index.js";
+import petModel from "../dao/models/Pet.js";
+import userModel from "../dao/models/User.js";
 
 
 class MockingService {
 
-    static async generateMockingUser(num) {
+    static async generateMockingPets(num) {
+        console.log(`Generando ${num} pets mock`);
+        const pets = []; //creamos pets
+        for(let i = 0; i < num; i++) {
+            pets.push({
+                name: faker.animal.dog(),
+                specie: faker.animal.type(),
+                adopted: false
+            });
+        }
+        return await petModel.insertMany(pets); // Inserta las mascotas en la base de datos
+    }
+
+    static async generateMockingUsers(num) {
         console.log(`Generando ${num} usuarios mock`);
         const users = []; //creamos usuarios
         for(let i = 0; i < num; i++) {
@@ -17,7 +32,7 @@ class MockingService {
                 pets: []
             });
         }
-        return users;
+        return await userModel.insertMany(users);
     }
 }
 
